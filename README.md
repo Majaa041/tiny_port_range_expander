@@ -24,3 +24,10 @@ The trade-off is simplicity over flexibility. There is no support for named prot
 - An empty token between commas (`'80,,443'`) raises `InvalidPortRange` rather than being silently skipped, so malformed input is surfaced.
 - Port `0` is accepted as a valid port number.
 - Overlapping ranges and duplicates are collapsed into the set.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
